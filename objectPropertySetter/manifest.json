@@ -3,13 +3,15 @@
 	"name": "Object Property Setter",
 	"description": "Helps the user to create predefined values for a specific property of an Object in the window scope and switch between them.",
 	"version": "2",
-	"permissions": ["declarativeContent","storage"],
-	"content_security_policy": "default-src 'self'",
-	"background": {
-		"scripts": ["background.js"],
-		"persistent": false
-	},
-	"page_action": {
+	"permissions": ["activeTab"],
+	"content_scripts":[
+		{
+			"matches": ["<all_urls>"],
+			"js":["tabContext.js"]
+		}
+	],
+	"web_accessible_resources": ["pageContext.js"],
+	"browser_action": {
 		"default_popup": "popup.html",
 		"default_icon": {
 			"16": "images/get_started16.png",
