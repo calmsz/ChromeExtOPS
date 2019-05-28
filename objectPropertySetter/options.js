@@ -1,4 +1,7 @@
 // Saves options to chrome.storage
+let qadefault = 'https://gestion-de-precios-cua.npapps.ocp.es.wcorp.carrefour.com/gestion-de-precios-ui-v1/';
+let devdefault = 'https://gestion-de-precios-dev.npapps.ocp.es.wcorp.carrefour.com/gestion-de-precios-ui-v1/';
+
 function save_options() {
     var qaurlValue = document.getElementById('qaurlInput').value;
     var devurlValue = document.getElementById('devurlInput').value;
@@ -22,8 +25,6 @@ function save_options() {
   // stored in chrome.storage.
   function restore_options() {
     // Use default values
-    let qadefault = 'https://gestion-de-precios-cua.npapps.ocp.es.wcorp.carrefour.com/gestion-de-precios-ui-v1/';
-    let devdefault = 'https://gestion-de-precios-dev.npapps.ocp.es.wcorp.carrefour.com/gestion-de-precios-ui-v1/';
     chrome.storage.sync.get({
         qaurl: qadefault,
         devurl: devdefault
@@ -37,6 +38,20 @@ function save_options() {
       }
     });
   }
+
+  function default_values() {
+    chrome.storage.sync.set({
+      qaurl: qadefault,
+      devurl: devdefault
+    }, function() {
+      qaurlStatus.textContent = `QA saved: ${qadefault}`;
+      devurlStatus.textContent = `DEV saved: ${devdefault}`;
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', restore_options);
   document.getElementById('save').addEventListener('click',
-      save_options);
+    save_options);
+  document.getElementById('default_values').addEventListener('click',
+    default_values);
+      
