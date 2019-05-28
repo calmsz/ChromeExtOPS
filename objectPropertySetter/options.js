@@ -22,12 +22,19 @@ function save_options() {
   // stored in chrome.storage.
   function restore_options() {
     // Use default values
+    let qadefault = 'https://gestion-de-precios-cua.npapps.ocp.es.wcorp.carrefour.com/gestion-de-precios-ui-v1/';
+    let devdefault = 'https://gestion-de-precios-dev.npapps.ocp.es.wcorp.carrefour.com/gestion-de-precios-ui-v1/';
     chrome.storage.sync.get({
-        qaurl: 'http://cua.ultraviolento',
-        devurl: 'http://dev.ultraviolento'
+        qaurl: qadefault,
+        devurl: devdefault
     }, function(items) {
-      document.getElementById('qaurlStatus').value = items.qaurl;
-      document.getElementById('devurlStatus').value = items.devurl;
+      if (!!!items.qaurl) {
+        document.getElementById('qaurlStatus').innerHTML = qadefault;
+        document.getElementById('devurlStatus').innerHTML = devdefault;        
+      } else {
+        document.getElementById('qaurlStatus').innerHTML = items.qaurl;
+        document.getElementById('devurlStatus').innerHTML = items.devurl;
+      }
     });
   }
   document.addEventListener('DOMContentLoaded', restore_options);
