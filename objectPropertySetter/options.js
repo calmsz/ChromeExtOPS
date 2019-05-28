@@ -1,4 +1,7 @@
 // Saves options to chrome.storage
+let qadefault = 'https://gestion-de-precios-cua.npapps.ocp.es.wcorp.carrefour.com/gestion-de-precios-ui-v1/';
+let devdefault = 'https://gestion-de-precios-dev.npapps.ocp.es.wcorp.carrefour.com/gestion-de-precios-ui-v1/';
+
 function save_options() {
     var qaurlValue = document.getElementById('qaurlInput').value;
     var devurlValue = document.getElementById('devurlInput').value;
@@ -23,13 +26,32 @@ function save_options() {
   function restore_options() {
     // Use default values
     chrome.storage.sync.get({
-        qaurl: 'http://cua.ultraviolento',
-        devurl: 'http://dev.ultraviolento'
+        qaurl: qadefault,
+        devurl: devdefault
     }, function(items) {
-      document.getElementById('qaurlStatus').value = items.qaurl;
-      document.getElementById('devurlStatus').value = items.devurl;
+      if (!!!items.qaurl) {
+        document.getElementById('qaurlStatus').innerHTML = qadefault;
+        document.getElementById('devurlStatus').innerHTML = devdefault;        
+      } else {
+        document.getElementById('qaurlStatus').innerHTML = items.qaurl;
+        document.getElementById('devurlStatus').innerHTML = items.devurl;
+      }
     });
   }
+
+  function default_values() {
+    chrome.storage.sync.set({
+      qaurl: qadefault,
+      devurl: devdefault
+    }, function() {
+      qaurlStatus.textContent = `QA saved: ${qadefault}`;
+      devurlStatus.textContent = `DEV saved: ${devdefault}`;
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', restore_options);
   document.getElementById('save').addEventListener('click',
-      save_options);
+    save_options);
+  document.getElementById('default_values').addEventListener('click',
+    default_values);
+      
